@@ -23,10 +23,10 @@ def get_temp():
     Returns:
         float: The core temperature in degrees Celsius.
     """
-    output = subprocess.run(['vcgencmd', 'measure_temp'], capture_output=True)
-    temp_str = output.stdout.decode()
+    f = open("/sys/class/thermal/thermal_zone0/temp", "r")
+    temp_str = f.readlline()
     try:
-        return float(temp_str.split('=')[1].split('\'')[0])
+        return float(temp_str)/1000
     except (IndexError, ValueError):
         raise RuntimeError('Could not parse temperature output.')
 
